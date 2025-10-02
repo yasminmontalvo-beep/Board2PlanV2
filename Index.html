@@ -1,251 +1,346 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>30‑Day Marketing Plan Generator — Board2Plan</title>
-  <meta name="description" content="Generate a 30‑day marketing plan Excel with analytics and a week‑one checklist, all in your browser." />
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <title>30‑Day Marketing Plan — 16 Industries + Playbook (Option B)</title>
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <style>
-    :root {
-      --bg: #f8fafc;
-      --card: #ffffff;
-      --text: #0f172a;
-      --muted: #64748b;
-      --accent: #0ea5e9;
-      --ring: #bae6fd;
-      --radius: 16px;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      background: linear-gradient(180deg, var(--bg), #fff);
-      color: var(--text);
-    }
-    .container { max-width: 960px; margin: 0 auto; padding: 24px; }
-    h1 { font-size: 28px; margin: 8px 0; }
-    p.lead { color: var(--muted); margin-top: 0; }
-    .card { background: var(--card); border: 1px solid #e5e7eb; border-radius: var(--radius); box-shadow: 0 2px 8px rgba(2, 6, 23, 0.04); }
-    .card-body { padding: 20px; display: grid; grid-template-columns: 1fr; gap: 16px; }
-    @media (min-width: 800px) { .card-body { grid-template-columns: 1fr 1fr; } }
-    label { font-size: 14px; color: var(--text); display: block; }
-    .input {
-      margin-top: 6px; width: 100%; height: 42px; padding: 0 12px; border-radius: 12px;
-      border: 1px solid #e2e8f0; outline: none; font-size: 14px; color: var(--text); background: #fff;
-    }
-    .input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--ring); }
-    .btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      width: 100%; height: 48px; border-radius: 9999px; border: 0;
-      background: var(--accent); color: #fff; font-weight: 600; cursor: pointer;
-    }
-    .btn:hover { filter: brightness(0.95); }
-    .grid { margin-top: 16px; display: grid; gap: 12px; }
-    @media (min-width: 800px) { .grid { grid-template-columns: repeat(3, 1fr); } }
-    .tile { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 14px; }
-    .muted { color: var(--muted); font-size: 14px; }
-    .footer { margin-top: 20px; font-size: 12px; color: var(--muted); }
-    .brand { font-weight: 700; color: var(--accent); letter-spacing: 0.2px; }
+    :root{--teal:#0ea5a5;--ink:#111;--line:#e6eaee;--soft:#f6f8f9}
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family:Inter,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial;color:var(--ink)}
+    header{background:#fff;border-bottom:1px solid var(--line)}
+    .wrap{max-width:1100px;margin:0 auto;padding:16px}
+    h1{font-size:22px;margin:0}
+    .sub{font-size:12px;color:#666}
+    .panel{border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--soft);margin-top:12px}
+    .grid{display:grid;gap:12px}
+    .cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+    button,.btn{padding:10px 12px;border:1px solid var(--line);border-radius:999px;cursor:pointer;background:#3b82f6;color:#fff;font-weight:600;text-decoration:none;display:inline-block}
+    .ghost{background:#fff;color:#222}
+    table{width:100%;border-collapse:separate;border-spacing:0;margin-top:8px}
+    th{text-align:left;padding:8px;border-bottom:2px solid var(--line);font-size:12px;color:#444;position:sticky;top:0;background:#fff}
+    td{padding:8px;border-bottom:1px solid var(--line);font-size:13px;vertical-align:top}
+    .diag{background:#fff5c7;border:1px solid #f1d48f;border-radius:10px;padding:10px;font-size:12px;color:#5b4b00;margin-top:10px}
+    footer{margin:24px 0;color:#666;font-size:12px}
+    @media (max-width:900px){.cols-4{grid-template-columns:1fr 1fr}}
+    @media (max-width:600px){.cols-4{grid-template-columns:1fr}}
+    .table-wrap{max-height:70vh;overflow:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
   </style>
-  <!-- XLSX: client-side Excel export -->
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
-  <div class="container">
-    <div class="brand">Board2Plan</div>
-    <h1>30‑Day Marketing Plan Generator</h1>
-    <p class="lead">Create a client‑ready Excel with daily tasks, analytics (CTR & engagement formulas), and a week‑one checklist — no code needed.</p>
-
-    <div class="card">
-      <div class="card-body">
-        <div>
-          <label for="start">Start date</label>
-          <input id="start" class="input" placeholder="YYYY-MM-DD" />
-        </div>
-        <div>
-          <label for="brand">Brand</label>
-          <input id="brand" class="input" value="Board2Plan" placeholder="e.g., Board2Plan" />
-        </div>
-        <div>
-          <label for="goal">Goal</label>
-          <input id="goal" class="input" value="Lead Generation" placeholder="e.g., Brand Awareness" />
-        </div>
-        <div>
-          <label for="file">Output file name</label>
-          <input id="file" class="input" value="30Day_Marketing_Plan.xlsx" placeholder="30Day_Marketing_Plan.xlsx" />
-        </div>
-        <div style="grid-column: 1 / -1;">
-          <button id="download" class="btn">⬇️ Download Excel</button>
-        </div>
-      </div>
+  <header>
+    <div class="wrap">
+      <h1>30‑Day Marketing Plan</h1>
+      <div class="sub">Self‑contained (no external libraries) • CSV + multi‑sheet XLS • 16 industries • Playbook included</div>
     </div>
+  </header>
 
-    <div class="grid">
-      <div class="tile">
-        <strong>Sheet 1: 30 Day Marketing Plan</strong>
-        <div class="muted">Daily tasks (pillar, task, channel, CTA, owner, status) with your brand &amp; goal noted on Day 1.</div>
+  <main class="wrap">
+    <section class="panel">
+      <div class="grid cols-4">
+        <label>Brand (optional)<br><input id="brand" placeholder="e.g., Acme Realty"></label>
+        <label>Business Type<br>
+          <select id="biz">
+            <option>Restaurant</option>
+            <option>Home Services / Trades</option>
+            <option>Real Estate</option>
+            <option>Beauty / Salon</option>
+            <option>E-commerce Retail</option>
+            <option>Professional Services</option>
+            <option>Nonprofit / Community</option>
+            <option>Travel & Hospitality</option>
+            <option>Healthcare / Wellness</option>
+            <option>Education / Coaching</option>
+            <option>Fitness</option>
+            <option>Automotive</option>
+            <option>Events / Venues</option>
+            <option>Tech / SaaS</option>
+            <option>Legal Services</option>
+            <option>Financial Services</option>
+          </select>
+        </label>
+        <label>Goal<br>
+          <select id="goal">
+            <option>Lead Generation</option>
+            <option>Engagement</option>
+            <option>Brand Awareness</option>
+            <option>Sales / Conversions</option>
+            <option>Website Traffic</option>
+            <option>Event Promotion</option>
+            <option>Product Launch</option>
+            <option>Community Building</option>
+            <option>Growth</option>
+          </select>
+        </label>
+        <label>Tone<br>
+          <select id="tone">
+            <option>Educational</option>
+            <option>Promotional</option>
+            <option>Community</option>
+            <option>Behind the Scenes</option>
+            <option>Trend-Driven</option>
+          </select>
+        </label>
       </div>
-      <div class="tile">
-        <strong>Sheet 2: Analytics</strong>
-        <div class="muted">KPI tracker with built‑in formulas for CTR and Engagement Rate.</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+        <button id="go">Generate</button>
+        <button id="csv" class="ghost">Export CSV</button>
+        <button id="xls" class="ghost">Download Workbook (.xls)</button>
+        <a class="btn" style="background:#22c55e;border:none" href="https://tuuswc-ne.myshopify.com/" target="_blank" rel="noopener">🛒 Buy on Shopify</a>
       </div>
-      <div class="tile">
-        <strong>Sheet 3: Phase 1</strong>
-        <div class="muted">Week‑one execution checklist to kickstart momentum.</div>
-      </div>
-    </div>
+      <div id="diag" class="diag" role="status" aria-live="polite"></div>
+    </section>
 
-    <div class="footer">Tip: Customize pillars/tasks in the code to match niche or tier. © <span class="brand">Board2Plan</span></div>
-  </div>
+    <section class="panel table-wrap">
+      <table id="table"></table>
+    </section>
+
+    <footer>
+      Need help? <a href="mailto:Yasmin.Montalvo@Gmail.com">Yasmin.Montalvo@Gmail.com</a>
+    </footer>
+  </main>
 
   <script>
-    const fmtDate = (d) => {
-      const yyyy = d.getFullYear();
-      const mm = String(d.getMonth() + 1).padStart(2, '0');
-      const dd = String(d.getDate()).padStart(2, '0');
-      return `${yyyy}-${mm}-${dd}`;
+  (function(){
+    const DAYS=30;
+    const COLS=["Day","Date","Platform","Content Type","Post Concept","Content Pillar","Call to Action","Primary Hashtags","Link / UTM","Asset","Status","Notes","Best Post Time"];
+    const ORDER=["Instagram","Facebook","LinkedIn","TikTok","YouTube Shorts","Instagram Stories","Twitter/X","Pinterest"];
+
+    const DEFAULT_TIMES={"Instagram":"11:00 AM","Instagram Stories":"10:00 AM","Facebook":"12:00 PM","LinkedIn":"9:00 AM","TikTok":"7:30 PM","YouTube Shorts":"6:00 PM","Twitter/X":"1:00 PM","Pinterest":"8:00 PM"};
+    const TIMES={
+      "Restaurant":{"Instagram":"1:00 PM","Instagram Stories":"11:30 AM","Facebook":"12:30 PM","TikTok":"8:00 PM","YouTube Shorts":"7:00 PM","Pinterest":"9:00 PM"},
+      "Home Services / Trades":{"Facebook":"6:30 PM","LinkedIn":"8:30 AM","Instagram":"12:00 PM","TikTok":"8:30 PM","YouTube Shorts":"7:00 PM"},
+      "Real Estate":{"Instagram":"12:30 PM","Facebook":"1:00 PM","LinkedIn":"8:30 AM","TikTok":"7:30 PM","YouTube Shorts":"6:30 PM"},
+      "Beauty / Salon":{"Instagram":"1:30 PM","Instagram Stories":"10:30 AM","TikTok":"8:30 PM","YouTube Shorts":"7:30 PM","Pinterest":"9:30 PM"},
+      "E-commerce Retail":{"Instagram":"12:00 PM","Facebook":"1:00 PM","TikTok":"9:00 PM","YouTube Shorts":"7:00 PM","Pinterest":"9:30 PM"},
+      "Professional Services":{"LinkedIn":"8:00 AM","Twitter/X":"12:00 PM","Instagram":"1:00 PM","YouTube Shorts":"6:00 PM"},
+      "Nonprofit / Community":{"Facebook":"12:30 PM","Instagram":"1:00 PM","Instagram Stories":"11:00 AM","TikTok":"8:00 PM"},
+      "Travel & Hospitality":{"Instagram":"11:30 AM","Facebook":"12:00 PM","TikTok":"8:30 PM","YouTube Shorts":"7:00 PM","Pinterest":"8:30 PM"},
+      "Healthcare / Wellness":{"Facebook":"12:00 PM","Instagram":"11:30 AM","LinkedIn":"9:00 AM","TikTok":"7:30 PM"},
+      "Education / Coaching":{"LinkedIn":"8:30 AM","Instagram":"12:30 PM","YouTube Shorts":"6:30 PM","TikTok":"8:30 PM"},
+      "Fitness":{"Instagram":"11:30 AM","TikTok":"8:30 PM","YouTube Shorts":"7:00 PM","Instagram Stories":"9:30 AM"},
+      "Automotive":{"Facebook":"12:30 PM","Instagram":"1:00 PM","YouTube Shorts":"6:30 PM","TikTok":"8:00 PM"},
+      "Events / Venues":{"Instagram":"12:30 PM","Facebook":"1:00 PM","TikTok":"8:30 PM","Instagram Stories":"10:30 AM"},
+      "Tech / SaaS":{"LinkedIn":"8:30 AM","Twitter/X":"12:30 PM","YouTube Shorts":"6:00 PM"},
+      "Legal Services":{"LinkedIn":"8:30 AM","Facebook":"12:30 PM","Instagram":"1:00 PM"},
+      "Financial Services":{"LinkedIn":"8:30 AM","Twitter/X":"12:30 PM","Instagram":"12:30 PM","YouTube Shorts":"6:30 PM"}
     };
-    const addDays = (d, n) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
 
-    const PILLARS = [
-      { name: 'Education', tasks: [
-        'Share an industry tip',
-        'Post a how-to guide',
-        'Explain a key term your audience asks about',
-        'Repurpose a blog into a carousel',
-      ]},
-      { name: 'Engagement', tasks: [
-        'Run a poll (IG/LinkedIn)',
-        'Ask a question and reply to 10 comments',
-        'Start a comment-to-DM conversation',
-        'Host a 15-min live Q&A',
-      ]},
-      { name: 'Promotion', tasks: [
-        'Spotlight a product/service benefit',
-        'Share a limited-time offer',
-        'Post a client testimonial (with visual)',
-        'Create a comparison post vs. alternatives',
-      ]},
-      { name: 'Storytelling', tasks: [
-        'Founder story: why you built this',
-        'Behind-the-scenes photo/video',
-        'Customer journey mini-case study',
-        'Milestone or lesson learned',
-      ]},
-    ];
+    const IDEAS={
+      "Restaurant":[
+        {concept:"Chef special spotlight",pillar:"Educational",hashtags:"#LocalEats #ChefSpecial #Foodie",cta:"Reserve a table",platforms:["Instagram","Facebook","TikTok"]},
+        {concept:"Happy hour carousel",pillar:"Promotional",hashtags:"#HappyHour #DrinksDeal #AfterWork",cta:"Book now",platforms:["Instagram","Facebook"]},
+        {concept:"Prep time‑lapse (BTS)",pillar:"Behind the Scenes",hashtags:"#KitchenLife #MadeFresh #BTS",cta:"See today’s menu",platforms:["TikTok","Instagram"]}
+      ],
+      "Home Services / Trades":[
+        {concept:"Seasonal maintenance tip card",pillar:"Education",hashtags:"#HomeFix #Maintenance #SafetyFirst",cta:"Request a free quote",platforms:["Facebook","LinkedIn"]},
+        {concept:"Before/After project reel",pillar:"Before/After",hashtags:"#BeforeAfter #LocalPro #QualityWork",cta:"Book inspection",platforms:["Instagram","TikTok"]},
+        {concept:"Customer testimonial snapshot",pillar:"Testimonials",hashtags:"#HappyCustomer #Trust #Local",cta:"Save our number",platforms:["Facebook","Instagram"]}
+      ],
+      "Real Estate":[
+        {concept:"New listing carousel",pillar:"Promotional",hashtags:"#NewListing #OpenHouse #DreamHome",cta:"Book a showing",platforms:["Instagram","Facebook","LinkedIn"]},
+        {concept:"Market update chart",pillar:"Educational",hashtags:"#MarketUpdate #RealEstateTips #LocalStats",cta:"Get your home value",platforms:["LinkedIn","Facebook"]},
+        {concept:"Neighborhood guide",pillar:"Educational",hashtags:"#NeighborhoodGuide #LocalLove #Relocation",cta:"Download the guide",platforms:["Instagram","LinkedIn"]}
+      ],
+      "Beauty / Salon":[
+        {concept:"Transformation before/after",pillar:"Transformations",hashtags:"#HairTransformation #GlowUp #ProStylist",cta:"Book now",platforms:["Instagram","TikTok"]},
+        {concept:"Product tip mini‑tutorial",pillar:"Product tips",hashtags:"#SalonTips #SkinCare #HealthyHair",cta:"See open slots",platforms:["Instagram","YouTube Shorts"]},
+        {concept:"Hygiene/BTS reel",pillar:"BTS & hygiene",hashtags:"#CleanSalon #BTS #ProCare",cta:"DM 'GLOW'",platforms:["Instagram","Facebook"]}
+      ],
+      "E-commerce Retail":[
+        {concept:"Bestseller unboxing",pillar:"UGC",hashtags:"#Unboxing #ShopNow #Bestsellers",cta:"Shop the drop",platforms:["Instagram","TikTok"]},
+        {concept:"How‑to usage clip",pillar:"How-to",hashtags:"#HowTo #ProblemSolved #EverydayCarry",cta:"Add to cart",platforms:["YouTube Shorts","Instagram"]},
+        {concept:"Bundle/discount promo",pillar:"Drops & bundles",hashtags:"#BundleAndSave #Deal #ShopOnline",cta:"Claim bundle",platforms:["Facebook","Instagram"]}
+      ],
+      "Professional Services":[
+        {concept:"3‑step framework carousel",pillar:"Frameworks",hashtags:"#Framework #B2B #Operations",cta:"Book a consult",platforms:["LinkedIn","Instagram"]},
+        {concept:"Case study metric highlight",pillar:"Case studies",hashtags:"#CaseStudy #ROI #Outcome",cta:"See case study",platforms:["LinkedIn","Twitter/X"]},
+        {concept:"Free audit promo",pillar:"Promotions",hashtags:"#Audit #FreeCheck #Consulting",cta:"DM 'AUDIT'",platforms:["LinkedIn","Instagram"]}
+      ],
+      "Nonprofit / Community":[
+        {concept:"Impact story highlight",pillar:"Impact stories",hashtags:"#GiveBack #Impact #Community",cta:"Donate today",platforms:["Facebook","Instagram"]},
+        {concept:"Volunteer call‑to‑action",pillar:"Events",hashtags:"#Volunteer #JoinUs #CommunityHelp",cta:"Sign up to help",platforms:["Instagram","Facebook"]},
+        {concept:"Transparent funds breakdown",pillar:"Education",hashtags:"#Transparency #Nonprofit #Trust",cta:"Share this",platforms:["Instagram","LinkedIn"]}
+      ],
+      "Travel & Hospitality":[
+        {concept:"Destination tips carousel",pillar:"Destination tips",hashtags:"#TravelTips #Wanderlust #Vacation",cta:"Request a quote",platforms:["Instagram","Facebook"]},
+        {concept:"Room/property walk‑through",pillar:"BTS tours",hashtags:"#Hotel #Resort #Stay",cta:"See availability",platforms:["TikTok","YouTube Shorts"]},
+        {concept:"Package/promo highlight",pillar:"Packages",hashtags:"#TravelDeal #LimitedOffer #Holiday",cta:"DM dates",platforms:["Instagram","Facebook"]}
+      ],
+      "Healthcare / Wellness":[
+        {concept:"Myth vs fact card",pillar:"Education",hashtags:"#HealthTips #Wellness #Prevention",cta:"Book a consultation",platforms:["Instagram","Facebook"]},
+        {concept:"Seasonal health reminder",pillar:"Seasonal",hashtags:"#FluSeason #SelfCare #Clinic",cta:"Call clinic",platforms:["Facebook","Instagram Stories"]},
+        {concept:"Patient testimonial (text)",pillar:"Testimonials",hashtags:"#Care #Trust #BetterHealth",cta:"Send a question",platforms:["Instagram","LinkedIn"]}
+      ],
+      "Education / Coaching":[
+        {concept:"Mini‑lesson carousel",pillar:"Mini-lessons",hashtags:"#MicroLesson #CoachTips #LearnToday",cta:"Download worksheet",platforms:["Instagram","LinkedIn"]},
+        {concept:"Student win spotlight",pillar:"Wins",hashtags:"#StudentWin #Progress #Community",cta:"Join waitlist",platforms:["Instagram","Facebook"]},
+        {concept:"Behind the curriculum",pillar:"Behind the curriculum",hashtags:"#BTS #Curriculum #Clarity",cta:"Book discovery call",platforms:["LinkedIn","YouTube Shorts"]}
+      ],
+      "Fitness":[
+        {concept:"Workout demo (WOD)",pillar:"WODs",hashtags:"#WOD #FitnessTips #Gym",cta:"Book a free trial",platforms:["Instagram","TikTok"]},
+        {concept:"Nutrition swap tip",pillar:"Nutrition",hashtags:"#Nutrition #HealthyHabits #FitJourney",cta:"Join the challenge",platforms:["Instagram","Facebook"]},
+        {concept:"Member transformation",pillar:"Transformations",hashtags:"#Transformation #Results #Community",cta:"DM 'START'",platforms:["Instagram","YouTube Shorts"]}
+      ],
+      "Automotive":[
+        {concept:"New arrival feature",pillar:"Inventory",hashtags:"#NewArrival #AutoLife #CarLove",cta:"Book a test drive",platforms:["Facebook","Instagram"]},
+        {concept:"Service tip quick clip",pillar:"Service tips",hashtags:"#CarCare #ServiceTips #Safety",cta:"Schedule service",platforms:["YouTube Shorts","Instagram"]},
+        {concept:"Customer testimonial",pillar:"Testimonials",hashtags:"#HappyCustomer #Trust #Dealer",cta:"Check eligibility",platforms:["Facebook","Instagram"]}
+      ],
+      "Events / Venues":[
+        {concept:"Lineup reveal",pillar:"Lineups",hashtags:"#EventLineup #SaveTheDate #LocalEvents",cta:"Buy tickets",platforms:["Instagram","Facebook"]},
+        {concept:"Vendor/artist spotlight",pillar:"Vendors/Artists",hashtags:"#VendorSpotlight #LiveMusic #Market",cta:"View schedule",platforms:["Instagram","TikTok"]},
+        {concept:"Setup BTS time‑lapse",pillar:"BTS",hashtags:"#BTS #EventPrep #Community",cta:"RSVP",platforms:["Instagram Stories","Facebook"]}
+      ],
+      "Tech / SaaS":[
+        {concept:"Feature spotlight with ROI",pillar:"Features",hashtags:"#SaaS #FeatureSpotlight #ProductUpdate",cta:"Start free trial",platforms:["LinkedIn","Twitter/X"]},
+        {concept:"Use‑case mini case",pillar:"Use cases",hashtags:"#UseCases #Automation #TimeSaved",cta:"See case study",platforms:["LinkedIn","Instagram"]},
+        {concept:"Roadmap teaser",pillar:"Roadmap",hashtags:"#Roadmap #BuildInPublic #Product",cta:"Join webinar",platforms:["YouTube Shorts","LinkedIn"]}
+      ],
+      "Legal Services":[
+        {concept:"Before you sign… tip",pillar:"Tips",hashtags:"#LegalTips #KnowYourRights #LawFirm",cta:"Book a consult",platforms:["LinkedIn","Facebook"]},
+        {concept:"Common mistakes carousel",pillar:"Education",hashtags:"#PlainEnglish #Contracts #SmallBiz",cta:"Ask a question",platforms:["Instagram","LinkedIn"]},
+        {concept:"Webinar/Q&A promo",pillar:"Webinars",hashtags:"#Webinar #Legal #ProtectYourself",cta:"Download checklist",platforms:["Facebook","Instagram"]}
+      ],
+      "Financial Services":[
+        {concept:"Simple money rule (2 bullets)",pillar:"Money tips",hashtags:"#MoneyTips #Finance101 #Wealth",cta:"Book intro call",platforms:["LinkedIn","Instagram"]},
+        {concept:"Client win metric",pillar:"Client wins",hashtags:"#Results #Plan #Investing",cta:"DM 'PLAN'",platforms:["LinkedIn","Twitter/X"]},
+        {concept:"Planning BTS snapshot",pillar:"Planning BTS",hashtags:"#Advisor #Discipline #LongTerm",cta:"Download checklist",platforms:["Instagram","Facebook"]}
+      ]
+    };
 
-    function buildPlanSheet(startDate, brand, goal) {
-      const headerNote = [brand, goal ? `Goal: ${goal}` : null].filter(Boolean).join(' — ');
-      let pillarIdx = 0;
-      const taskIdxs = [0, 0, 0, 0];
+    const PLAYBOOK={
+      "Restaurant":{personas:["Local foodie","Date‑night planner"],pillars:["Menu","Promos","UGC","BTS"],hooks:["Tonight’s special:","What our chef does differently:","Date night solved:"],ctas:["Reserve","Order online","Call now"],hashtags:["#LocalEats","#ChefSpecial","#Foodie","#DateNight","#SupportLocal"],caption:"Hook ➜ Dish/offer ➜ Social proof ➜ CTA."},
+      "Home Services / Trades":{personas:["Homeowner in a hurry","Planner researching pros"],pillars:["Education","Before/After","Testimonials","Promotions"],hooks:["Stop this mistake:","Quick fix for:","What to do first if:"],ctas:["Request a free quote","Save our number","Book inspection"],hashtags:["#HomeFix","#BeforeAfter","#LocalPro","#SafetyFirst","#Maintenance"],caption:"Problem ➜ Quick tip ➜ Proof ➜ CTA (Free quote)."},
+      "Real Estate":{personas:["First‑time buyer","Move‑up seller"],pillars:["Listings","Education","Client wins","Neighborhood"],hooks:["This block just got a gem:","3 reasons this layout wins:","Price drop alert:"],ctas:["Book a showing","Get valuation","DM 'LIST'"],hashtags:["#NewListing","#OpenHouse","#MarketUpdate","#DreamHome","#JustSold"],caption:"Hook (address/price) ➜ 3 highlights ➜ Area benefit ➜ CTA."},
+      "Beauty / Salon":{personas:["Transformation seeker","Maintenance client"],pillars:["Transformations","Product tips","UGC","BTS & hygiene"],hooks:["From brassy to glossy:","Formula breakdown:","How to keep this shine:"],ctas:["Book now","See open slots","DM 'GLOW'"],hashtags:["#HairTransformation","#GlowUp","#SalonTips","#SkinCare","#ProStylist"],caption:"Before ➜ Process ➜ After ➜ Formula hint ➜ CTA."},
+      "E-commerce Retail":{personas:["Gift buyer","Everyday user"],pillars:["Bestsellers","UGC","How‑to","Drops & bundles"],hooks:["Wait till you see the 3rd item:","Unbox with me:","Solve this daily hassle:"],ctas:["Shop the drop","Add to cart","Claim bundle"],hashtags:["#Bestsellers","#Unboxing","#ShopNow","#UGC","#BundleAndSave"],caption:"Hook ➜ Benefit bullets ➜ Social proof ➜ CTA."},
+      "Professional Services":{personas:["Decision‑maker","Researcher"],pillars:["Frameworks","Case studies","Testimonials","Promos"],hooks:["We cut cost by 27% using:","3‑step play to fix:","Stop doing this in Q4:"],ctas:["Book consult","Download checklist","DM 'AUDIT'"],hashtags:["#CaseStudy","#Framework","#B2B","#Consulting","#ROI"],caption:"Problem ➜ Approach ➜ Result metric ➜ CTA."},
+      "Nonprofit / Community":{personas:["Local supporter","Volunteer"],pillars:["Impact stories","Events","Education","Gratitude"],hooks:["Because of you, Maya…","This $10 becomes:","Help us reach 100 kits:"],ctas:["Donate today","Sign up to help","Share this"],hashtags:["#GiveBack","#Community","#Volunteer","#Impact","#Nonprofit"],caption:"Person/impact ➜ Where funds go ➜ Next step ➜ CTA."},
+      "Travel & Hospitality":{personas:["Weekend tripper","Family planner"],pillars:["Destination tips","Packages","Reviews","BTS tours"],hooks:["3 local spots only locals know:","Pack smarter for:","Best month to go:"],ctas:["Request a quote","See availability","DM dates"],hashtags:["#TravelTips","#Wanderlust","#Hotel","#Vacation","#TravelDeal"],caption:"Hook (season) ➜ 3 tips ➜ Package value ➜ CTA."},
+      "Healthcare / Wellness":{personas:["Preventive care","Condition‑specific"],pillars:["Education","Myth vs fact","Testimonials","Seasonal"],hooks:["Myth vs fact:","3 signs you should check:","Save this for flu season:"],ctas:["Book a consultation","Call clinic","Send a question"],hashtags:["#Wellness","#Prevention","#HealthTips","#SelfCare","#Clinic"],caption:"Symptom/concern ➜ Plain‑English tip ➜ When to see a pro ➜ CTA."},
+      "Education / Coaching":{personas:["Self‑improver","Career switcher"],pillars:["Mini‑lessons","Wins","Behind the curriculum","CTA to cohort"],hooks:["If you struggle with:","A 5‑minute way to:","Try this framework:"],ctas:["Book discovery call","Join waitlist","Download worksheet"],hashtags:["#LearnToday","#CoachTips","#MicroLesson","#Cohort","#Grow"],caption:"Hook (problem) ➜ 3‑step mini lesson ➜ Download/DM ➜ CTA."},
+      "Fitness":{personas:["Beginner","Challenge seeker"],pillars:["WODs","Nutrition","Transformations","Community"],hooks:["Steal this workout:","Fix your form in 10s:","2 foods to swap:"],ctas:["Book a free trial","Join the challenge","DM 'START'"],hashtags:["#WOD","#FitnessTips","#Gym","#Nutrition","#FitJourney"],caption:"Hook ➜ Demo ➜ Coaching cue ➜ CTA."},
+      "Automotive":{personas:["New buyer","Service customer"],pillars:["Inventory","Service tips","Testimonials","Promos"],hooks:["Why this trim is worth it:","Don’t ignore this light:","Detailing secrets:"],ctas:["Book a test drive","Schedule service","Check eligibility"],hashtags:["#CarCare","#NewArrival","#AutoLife","#ServiceTips","#Detailing"],caption:"Hook (feature) ➜ Benefit ➜ Offer/financing ➜ CTA."},
+      "Events / Venues":{personas:["Local night out","Community group"],pillars:["Lineups","Vendors/Artists","BTS","Recaps & promos"],hooks:["Weekend plans?","Sneak peek of the stage:","Last call for:"],ctas:["Buy tickets","View schedule","RSVP"],hashtags:["#EventLineup","#SaveTheDate","#LocalEvents","#LiveMusic","#VendorSpotlight"],caption:"Hook (date/artist) ➜ 3 reasons to go ➜ Offer ➜ CTA."},
+      "Tech / SaaS":{personas:["Ops owner","IC user"],pillars:["Features","Use cases","Wins","Roadmap"],hooks:["Ship 2x faster with:","We killed 3 spreadsheets using:","Stop copy‑pasting:"],ctas:["Start free trial","See case study","Join webinar"],hashtags:["#SaaS","#FeatureSpotlight","#UseCases","#Automation","#ProductUpdate"],caption:"Pain ➜ Feature ➜ Outcome metric ➜ CTA."},
+      "Legal Services":{personas:["Concerned individual","Small business owner"],pillars:["Tips","Testimonials","BTS prep","Webinars"],hooks:["Before you sign:","Top 3 mistakes in:","Do this within 24h:"],ctas:["Book a consult","Ask a question","Download checklist"],hashtags:["#LegalTips","#KnowYourRights","#LawFirm","#FreeConsult","#PlainEnglish"],caption:"Hook (common issue) ➜ Tip ➜ Risk avoided ➜ CTA."},
+      "Financial Services":{personas:["Starter saver","Wealth builder"],pillars:["Money tips","Client wins","Planning BTS","Promos"],hooks:["Stop doing this with your savings:","2 rules for beginners:","What to do in a dip:"],ctas:["Book intro call","Download checklist","DM 'PLAN'"],hashtags:["#MoneyTips","#Finance101","#Wealth","#Investing","#FinancialPlan"],caption:"Myth ➜ Fact ➜ Simple step ➜ CTA."}
+    };
 
-      const rows = Array.from({ length: 30 }, (_, i) => {
-        const pillar = PILLARS[pillarIdx];
-        const task = pillar.tasks[taskIdxs[pillarIdx] % pillar.tasks.length];
-        taskIdxs[pillarIdx]++;
-        pillarIdx = (pillarIdx + 1) % PILLARS.length;
+    const $=id=>document.getElementById(id);
+    const fmt=(add)=>{const d=new Date(); d.setDate(d.getDate()+add); return d.toLocaleDateString(undefined,{year:'numeric',month:'short',day:'2-digit'})};
+    const pickPlat=(idea,i)=>Array.isArray(idea.platforms)&&idea.platforms.length?idea.platforms[i%idea.platforms.length]:ORDER[i%ORDER.length];
+    const best=(platform,biz)=>Object.assign({},DEFAULT_TIMES,TIMES[biz]||{})[platform]||"11:30 AM";
+    const slug=s=>String(s||'').toLowerCase().replace(/&/g,' and ').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+    const utm=(platform,biz,goal,day,brand)=>`https://example.com?utm_source=${platform.toLowerCase().replace(/\W+/g,'_')}&utm_medium=social&utm_campaign=${slug(biz)}_${slug(goal)}&utm_content=day${day}-${slug(platform)}${brand?`&utm_brand=${encodeURIComponent(brand)}`:''}`;
 
-        return {
-          'Day': i + 1,
-          'Date': fmtDate(addDays(startDate, i)),
-          'Pillar': pillar.name,
-          'Primary Task': task,
-          'Content Angle / Hook': '',
-          'Channel (IG/FB/LI/TikTok/Email/Blog)': '',
-          'Asset Needed (video, image, carousel, blog)': '',
-          'CTA (book call, read more, shop, reply)': '',
-          'Owner': '',
-          'Status': 'Not started',
-          'Notes': i === 0 && headerNote ? headerNote : '',
-        };
-      });
-
-      const ws = XLSX.utils.json_to_sheet(rows, { origin: 0 });
-      ws['!cols'] = [
-        { wch: 5 }, { wch: 12 }, { wch: 14 }, { wch: 48 }, { wch: 28 },
-        { wch: 30 }, { wch: 36 }, { wch: 30 }, { wch: 14 }, { wch: 14 }, { wch: 36 },
-      ];
-      return ws;
-    }
-
-    function buildAnalyticsSheet(startDate) {
-      const rows = Array.from({ length: 30 }, (_, i) => ({
-        'Date': fmtDate(addDays(startDate, i)),
-        'Channel': '',
-        'Content': '',
-        'Impressions': '',
-        'Clicks': '',
-        'Likes': '',
-        'Comments': '',
-        'Shares': '',
-        'Saves': '',
-        'CTR': '',
-        'Engagement Rate': '',
-      }));
-      const ws = XLSX.utils.json_to_sheet(rows, { origin: 0 });
-      for (let r = 2; r <= 31; r++) {
-        const ctrCell = `J${r}`;
-        const engCell = `K${r}`;
-        if (!ws[ctrCell]) ws[ctrCell] = {};
-        if (!ws[engCell]) ws[engCell] = {};
-        ws[ctrCell].f = `IFERROR(E${r}/D${r},0)`;
-        ws[engCell].f = `IFERROR((F${r}+G${r}+H${r}+I${r})/D${r},0)`;
+    function buildRows(){
+      const biz=$('biz').value, goal=$('goal').value, tone=$('tone').value, brand=($('brand').value||'').trim();
+      const ideas=IDEAS[biz]||IDEAS["Professional Services"];
+      const rows=[];
+      for(let d=1; d<=DAYS; d++){
+        const idea=ideas[(d-1)%ideas.length];
+        const platform=pickPlat(idea,d-1);
+        rows.push({
+          "Day":`Day ${d}`,
+          "Date":fmt(d-1),
+          "Platform":platform,
+          "Content Type":({"Instagram":"Image / Reel","Instagram Stories":"Stories (3-5 slides)","Facebook":"Image / Carousel","LinkedIn":"Carousel / Text Post","TikTok":"Short-form Video","YouTube Shorts":"Short-form Video","Twitter/X":"Text + Image","Pinterest":"Idea Pin"})[platform]||"Post",
+          "Post Concept":idea.concept,
+          "Content Pillar":idea.pillar,
+          "Call to Action":idea.cta,
+          "Primary Hashtags":idea.hashtags,
+          "Link / UTM":utm(platform,biz,goal,d,brand),
+          "Asset":"TBD",
+          "Status":"Planned",
+          "Notes":"",
+          "Best Post Time":best(platform,biz)
+        });
       }
-      ws['!cols'] = [
-        { wch: 12 }, { wch: 12 }, { wch: 30 }, { wch: 14 }, { wch: 10 },
-        { wch: 10 }, { wch: 12 }, { wch: 10 }, { wch: 10 }, { wch: 12 }, { wch: 18 },
-      ];
-      return ws;
+      $('diag').textContent=`Brand: ${brand||'(none)'} | Business: ${biz} | Goal: ${goal} | Tone: ${tone}`;
+      return rows;
     }
 
-    function buildPhase1Sheet() {
-      const header = ['Day', 'Task', 'Area', 'Owner', 'Status', 'Notes'];
-      const week1 = [
-        ['Day 1', 'Define campaign theme and single KPI', 'Strategy', '', 'Not started', ''],
-        ['Day 2', 'Audit channels and pick 2 primary platforms', 'Strategy', '', 'Not started', ''],
-        ['Day 3', 'Draft 10 content hooks & 5 CTAs', 'Creative', '', 'Not started', ''],
-        ['Day 4', 'Create 3 core assets (video, carousel, image)', 'Production', '', 'Not started', ''],
-        ['Day 5', 'Schedule next 7 days of posts', 'Operations', '', 'Not started', ''],
-        ['Day 6', 'Engage: 20 meaningful interactions', 'Community', '', 'Not started', ''],
-        ['Day 7', 'Report quick wins, adjust hooks/CTAs', 'Analytics', '', 'Not started', ''],
-      ];
-      const ws = XLSX.utils.aoa_to_sheet([header, ...week1]);
-      ws['!cols'] = [
-        { wch: 8 }, { wch: 48 }, { wch: 14 }, { wch: 14 }, { wch: 14 }, { wch: 36 },
-      ];
-      return ws;
+    function renderTable(rows){
+      const thead='<thead><tr>'+COLS.map(c=>`<th>${c}</th>`).join('')+'</tr></thead>';
+      const body=rows.map(r=>'<tr>'+COLS.map(c=>`<td>${r[c]??''}</td>`).join('')+'</tr>').join('');
+      $('table').innerHTML=thead+'<tbody>'+body+'</tbody>';
     }
 
-    function setDefaultStartDate() {
-      const input = document.getElementById('start');
-      const today = new Date();
-      input.value = fmtDate(today);
+    function toCSV(rows){
+      const esc=v=>'"'+String(v).replaceAll('"','""')+'"';
+      const head=COLS.join(',');
+      const body=rows.map(r=>COLS.map(c=>esc(r[c]??'')).join(',')).join('\n');
+      return head+'\n'+body;
     }
 
-    function onDownload() {
-      const startStr = document.getElementById('start').value.trim();
-      const brand = document.getElementById('brand').value.trim();
-      const goal = document.getElementById('goal').value.trim();
-      const fileName = (document.getElementById('file').value.trim() || '30Day_Marketing_Plan.xlsx')
-        .replace(/[^a-zA-Z0-9._-]+/g, '_');
+    // Excel 2003 XML (multi‑sheet, no libs)
+    const xCell=v=>`<Cell><Data ss:Type="String">${String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</Data></Cell>`;
+    const xRow=arr=>`<Row>${arr.map(xCell).join('')}</Row>`;
 
-      if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(startStr)) {
-        alert('Please enter a valid start date (YYYY-MM-DD)');
-        return;
-      }
-      const parts = startStr.split('-').map(Number);
-      const start = new Date(parts[0], parts[1] - 1, parts[2]);
+    function buildWorkbookXML(rows,biz,tone,goal,brand){
+      const header = xRow(COLS);
+      const plan = header + rows.map(r=>xRow(COLS.map(c=>r[c]??''))).join('');
 
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, buildPlanSheet(start, brand, goal), '30 Day Marketing Plan');
-      XLSX.utils.book_append_sheet(wb, buildAnalyticsSheet(start), 'Analytics');
-      XLSX.utils.book_append_sheet(wb, buildPhase1Sheet(), 'Phase 1');
+      const ideas=IDEAS[biz]||[];
+      const kw = xRow(['Concept','Pillar','Hashtags']) + ideas.map(i=>xRow([i.concept,i.pillar,i.hashtags])).join('');
 
-      XLSX.writeFile(wb, fileName);
+      const times=Object.assign({},DEFAULT_TIMES,TIMES[biz]||{});
+      const bpt = xRow(['Platform','Best Post Time']) + Object.keys(times).map(p=>xRow([p,times[p]])).join('');
+
+      const acct = xRow(['Platform','Handle','URL','Notes']);
+
+      const p=PLAYBOOK[biz]||PLAYBOOK["Professional Services"];
+      const pb = [
+        xRow([`Playbook for: ${biz}`]),
+        xRow([`Goal: ${goal} | Tone: ${tone}`]),
+        xRow(['']),
+        xRow(['Audience Personas']), ...p.personas.map(x=>xRow([x])), xRow(['']),
+        xRow(['Content Pillars']), xRow([p.pillars.join(' • ')]), xRow(['']),
+        xRow(['Hook Starters']), ...p.hooks.map(x=>xRow([x])), xRow(['']),
+        xRow(['CTA Examples']), xRow([p.ctas.join(' • ')]), xRow(['']),
+        xRow(['Default Hashtags']), xRow([p.hashtags.join(' ')]), xRow(['']),
+        xRow(['Caption Framework']), xRow([p.caption])
+      ].join('');
+
+      return `<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
+  <Worksheet ss:Name="30-Day Plan"><Table>${plan}</Table></Worksheet>
+  <Worksheet ss:Name="Keywords & Hashtags"><Table>${kw}</Table></Worksheet>
+  <Worksheet ss:Name="Analytics"><Table>${xRow(['Date','Platform','Post URL','Impressions','Reach','Engagements','Saves','Clicks','Notes'])}</Table></Worksheet>
+  <Worksheet ss:Name="Best Post Times"><Table>${bpt}</Table></Worksheet>
+  <Worksheet ss:Name="Accounts"><Table>${acct}</Table></Worksheet>
+  <Worksheet ss:Name="Playbook"><Table>${pb}</Table></Worksheet>
+</Workbook>`;
     }
 
-    document.getElementById('download')?.addEventListener('click', onDownload);
-    setDefaultStartDate();
+    function dl(name,content,type){
+      const a=document.createElement('a');
+      a.href=URL.createObjectURL(new Blob([content],{type}));
+      a.download=name; document.body.appendChild(a); a.click(); a.remove();
+    }
+
+    function refresh(){
+      const rows=buildRows();
+      renderTable(rows);
+      $('csv').onclick=()=>dl('30Day.csv',toCSV(rows),'text/csv');
+      const brand=($('brand').value||'').trim(), biz=$('biz').value, goal=$('goal').value, tone=$('tone').value;
+      const fname=`30Day_${(brand||'brand').toLowerCase().replace(/[^a-z0-9]+/g,'-')}_${biz.toLowerCase().replace(/[^a-z0-9]+/g,'-')}_${goal.toLowerCase().replace(/[^a-z0-9]+/g,'-')}.xls`;
+      $('xls').onclick=()=>dl(fname, buildWorkbookXML(rows,biz,tone,goal,brand),'application/vnd.ms-excel');
+      $('diag').textContent=`Brand: ${brand||'(none)'} | Business: ${biz} | Goal: ${goal} | Tone: ${tone}`;
+    }
+
+    $('go').addEventListener('click', refresh);
+    refresh();
+  })();
   </script>
 </body>
 </html>
